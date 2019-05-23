@@ -1,9 +1,0 @@
-- In the current assignment I had to use PHP and HTML to create a website and connect it to a database that was created in assignment 2. 
-
-- Please look at the assignment 2 file to understand the database utilized. 
-
-- all work was done using GIT Bash, and uploaded to a virtual machine running Linux (Version: centOS 7) 
-
-- The website did not require visual appeal, so there is no JavaScript or CSS implemented in the website
-
-- Unfortunately, the server on which the website was uploaded had been wiped and therefore the website cannot be viewed. However, the current assignment files still show the implementation of the HTML and PHP tags, along with SQL statements being applied to the database
