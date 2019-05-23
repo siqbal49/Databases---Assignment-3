@@ -1,0 +1,128 @@
+<!-- This is the main file for the website. Creates the layout of the home page and executes other php files where needed -->
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Sports R' Us</title>
+</head>
+<body>
+<?php
+include "connectdb.php"; // connects to the database.
+?>
+<h1>Welcome to Sports R' Us</h1>
+<h2>Customer Information</h2>
+<form action="getproduct.php" method="post"> <!-- getproduct.php is used to get the purchase information from a certain customer -->
+<?php
+        include "getcustomer.php"; // displays the radio buttons containing all the customer information.
+?>
+<input type="submit" value ="Get Purchase Information">
+</form>
+
+<h2>Product Information</h2>
+
+<form action="sort.php" method="post"> <!-- sort.php is used to sort the information in ascending/descending order based on the radio selection below -->
+<?php
+        include "productinformation.php"; // displays all the products data.
+?>
+How would you like the data sorted by description?
+<input type="radio" name="sort" value="ASC">Ascending // has value for ascending sorting. used in sort.php  
+<input type="radio" name="sort" value="DESC">Descending // has value for descending sorting. used in sort.php
+<input type="submit" value ="Sort">
+</form>
+
+
+<p>
+<hr>
+<p>
+<h2> ADD A NEW PURCHASE:</h2>
+<form action="addnewpurchase.php" method="post"> <!-- adds a new purchase to the chosen customer and product below. If the same purchase exists, then it is updated so that the quantity increases by the amount inputed-->
+Purchasing customer: <br>
+<?php
+        include "getcustomer.php";?>  // Used to display radio buttons of all customer information
+New product's ID: <br>  <!-- I know this is not the best way to design the radio buttons, but since there is no need to add products to the database it works out -->
+
+<input type="radio" name="productID" value="11">11: Bike<br>
+<input type="radio" name="productID" value="12">12: Socks<br>
+<input type="radio" name="productID" value="51">51: Hockey Stick<br>
+<input type="radio" name="productID" value="66">66: Elbow Pad<br>
+<input type="radio" name="productID" value="78">78: Knee Pads<br>
+<input type="radio" name="productID" value="88">88: Roller Blades<br>
+<input type="radio" name="productID" value="99">99: Helmet<br>
+
+Quantity: <input type="number" name="quantity" min="1">
+<input type="submit" value="Add Purchase">
+</form>
+
+<p>
+<hr>
+<p>
+<h2> ADD A NEW Customer:</h2>
+<form action="addnewcustomer.php" method="post"> <!-- Adds a new customer and using the prompts below -->
+New Customer's First Name: <input type="text" name="firstname"><br>
+New Customer's Last Name: <input type="text" name="lastname"><br>
+New Customer's City: <input type="text" name="City"><br>
+New Customer's Phone number: <input type="text" name="phonenumber"><br>
+
+<input type="submit" value="Add New Customer">
+</form>
+
+<h2>Update Customer's Phone Number</h2>
+<form action="updateCustomerPhoneNumber.php" method="post"> <!-- updates the phone number of the customer selected ID from the radio button -->
+<?php
+        echo 'Select the customer ID whose phone number you would like to change <br>';
+        include "getcustomerID.php"; // used to display radio buttons of customer ID and name
+?>
+<input type="submit" value ="Update Number">
+</form>
+
+<h2>Delete Customer</h2>
+<form action="deletecustomer.php" method="post"> <!-- Deletes the customer that has the same customer ID selected below -->
+<?php
+        echo 'Select the customer that you want to delete: <br>';
+        include "getcustomerID.php"; // used to display radio buttons of customer ID and name
+?>
+<input type="submit" value ="Delete Customer">
+</form>
+
+<h2>List of customers who bought more than the given quantity of a product</h2>
+<form action="boughtmorethan.php" method="post">    <!-- Prompts for quantity and then displays customers who bought more than the given amount -->
+Input the quantity: <input type="number" name="numbermorethan" min="1"> // minimum entry is 1 
+<input type="submit" value ="Search">
+</form>
+
+<!-- No php file used. It just runs a query to find the non-purchased items and then echoes the results. -->
+<h2>List of Products Never Purchased</h2>
+<?php
+$query= 'SELECT description FROM product WHERE prodID NOT IN(SELECT prodID FROM purchases) GROUP BY description';
+   $result= mysqli_query($connection, $query);
+   if (!$result) {
+        die("Error: insert failed" . mysqli_error($connection));
+ }
+   while ($row=mysqli_fetch_assoc($result)) {
+        echo '<li>';
+        echo "Description: " . $row["description"];
+   }
+?>
+</form>
+
+<!-- Uses productsales.php to determine how much of the selected product was sold, the description, and the total sales (quantity*cost) -->
+<h2>Product Sale History</h2>
+<form action="productsales.php" method="post">
+Product's ID: <br>
+<input type="radio" name="purchaseproductID" value="11">11: Bike<br>
+<input type="radio" name="purchaseproductID" value="12">12: Socks<br>
+<input type="radio" name="purchaseproductID" value="51">51: Hockey Stick<br>
+<input type="radio" name="purchaseproductID" value="66">66: Elbow Pad<br>
+<input type="radio" name="purchaseproductID" value="78">78: Knee Pads<br>
+<input type="radio" name="purchaseproductID" value="88">88: Roller Blades<br>
+<input type="radio" name="purchaseproductID" value="99">99: Helmet<br>
+
+<input type="submit" value ="Show Purchases">
+</form>
+
+
+<?php
+mysqli_close($connection);
+?>
+</body>
+</html>

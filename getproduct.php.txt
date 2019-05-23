@@ -1,0 +1,37 @@
+<!-- Displays what the customer that was selected in the radio button from assignment3.php has purchased -->
+
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Customer Purchase Information</title>
+</head>
+<body>
+<?php
+include 'connectdb.php';
+?>
+<h1>What this Customer Bought:</h1>
+<ol>
+<?php
+   $whichCustomer= $_POST["customers"]; // input from radio button in assignment3.php
+   $query = 'SELECT * FROM product, purchases WHERE product.prodID=purchases.prodID AND purchases.cusID="' . $whichCustomer . '"ORDER BY description';
+   $result=mysqli_query($connection,$query);
+    if (!$result) {
+         die("database query2 failed.");
+     }
+    while ($row=mysqli_fetch_assoc($result)) {
+        echo '<li>';
+         echo "ID: ".$row["prodID"].", "."Description: ". $row["description"].", "."Cost: ".$row["cost"].", "."Quanity: ".$row["Quantity"];
+     }
+     mysqli_free_result($result);
+?>
+</ol>
+<?php
+        include "goback.php"; // creates radio button that takes you back to the homepage 
+?>
+
+<?php
+   mysqli_close($connection);
+?>
+</body>
+</html>

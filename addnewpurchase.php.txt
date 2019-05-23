@@ -1,0 +1,35 @@
+<!-- Adds a new purchase using the prompts in the assignment3.php file -->
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Purchase Order information</title>
+</head>
+<body>
+<?php
+   include 'connectdb.php'; // connects to database 
+?>
+<h1>Here is your order:</h1>
+<ol>
+<?php
+   // creates variables using the input from the prompts
+   $whichCustomer= $_POST["customers"];
+   $whichProduct= $_POST["productID"];
+   $quantity= $_POST["quantity"];
+   // inserts a new purchase into the purchases table using the information entered in the prompt. 
+   // If there is already a purchase of the same product by the same customer (would have same primary key), then an update occurs where the quantity is increased by the amount inputed
+   $query = 'INSERT INTO purchases values("' . $whichCustomer . '","' . $whichProduct . '","' . $quantity . '")ON DUPLICATE KEY UPDATE Quantity= Quantity+"' . $quantity . '"';
+   if (!mysqli_query($connection, $query)) {
+        die("Error: insert failed" . mysqli_error($connection));
+    }
+   echo "Your purchase is done!";
+?>
+<?php
+        include "goback.php"; // creates a button that redirects you back to the home page 
+?>
+<?php
+        mysqli_close($connection);
+?>
+</ol>
+</body>
+</html>

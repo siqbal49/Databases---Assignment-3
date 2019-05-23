@@ -1,0 +1,16 @@
+<!-- Creates a static list of all products and their information. Sorts in ascending order by description -->
+
+<?php
+$query = "SELECT * FROM product ORDER BY description";
+$result = mysqli_query($connection,$query);
+if (!$result) {
+    die("databases query failed.");
+}
+echo "List of Products </br>";
+while ($row = mysqli_fetch_assoc($result)) {
+        echo $row["prodID"] . ", " . $row["description"] . ", " . $row["cost"] .", " .  $row["quantityonhand"] ."<br>";
+
+}
+mysqli_free_result($result);
+?>
+

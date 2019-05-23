@@ -1,0 +1,33 @@
+<!-- Used to set the new number that was input in updateCustomerPhoneNumber.php -->
+<!-- Need this new file because I needed the customer ID radio button information used in updateCustomerPhoneNumber.php -->
+
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Updating Customer Phone Number</title>
+</head>
+<body>
+<?php
+   include 'connectdb.php';
+?>
+<h1>Customer Number Updated!</h1>
+<ol>
+<?php
+   $customerID= $_POST["confirmID"]; // from the confirmation radio button in updateCustomerPhoneNumber.php
+   $newNumber= $_POST["newNumber"];
+   $query = 'UPDATE customer SET phonenumber="' . $newNumber . '" WHERE (cusID="' . $customerID . '")';
+   if (!mysqli_query($connection, $query)) {
+        die("Error: insert failed" . mysqli_error($connection));
+    }
+?>
+<?php
+        include "goback.php";
+?>
+<?php
+        mysqli_close($connection);
+?>
+
+</ol>
+</body>
+</html>

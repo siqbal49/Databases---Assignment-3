@@ -1,0 +1,17 @@
+<!-- creates radio buttons with the customer ID and customer names from the customer table --> 
+
+<?php
+$query = "SELECT * FROM customer ORDER BY lastname";
+$result = mysqli_query($connection,$query);
+if (!$result) {
+    die("databases query failed.");
+}
+while ($row = mysqli_fetch_assoc($result)) {
+        echo '<input type="radio" name="customerID" value="';
+        echo $row["cusID"];
+        echo '">'. "Id: " . $row["cusID"]. "<br>";
+
+}
+mysqli_free_result($result);
+?>
+

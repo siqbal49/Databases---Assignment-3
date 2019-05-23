@@ -1,0 +1,45 @@
+<!-- Adds a new customer using the prompts from the assignment3.php file (the website) -->
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Adding New Customer</title>
+</head>
+<body>
+<?php
+   include 'connectdb.php'; // Connects to the database 
+?>
+<h1>Adding Customer...</h1>
+<ol>
+<?php
+   // Sets up variables
+   $newFirstName= $_POST["firstname"];
+   $newLastName = $_POST["lastname"];
+   $newCity =$_POST["City"];
+   $newPhoneNumber =$_POST["phonenumber"];
+   $query1= 'SELECT MAX(cusID) AS maxID FROM customer'; // helps creates a new unique customer ID by first finding the max customer ID, and then 1 is added to it later on
+   $result=mysqli_query($connection,$query1);
+   if (!$result) {
+          die("database max query failed."); // Used to check my query 
+   }
+   $row=mysqli_fetch_assoc($result);
+   $newkey = intval($row["maxID"]) + 1; // adds 1 to the max customer ID to get a unique customer ID
+   $newCusID = (string)$newkey;
+   // Inserts the data into the customer table 
+   $query = 'INSERT INTO customer values("' . $newCusID . '","' . $newFirstName . '","' . $newLastName . '","' . $newCity . '","' . $newPhoneNumber . '", NULL)';
+   if (!mysqli_query($connection, $query)) {
+        die("Error: insert failed" . mysqli_error($connection));
+    }
+   echo "Customer successfully added!";
+?>
+<?php
+        include "goback.php"; // creates a button that redirects you back to the home page
+?>
+
+<?php
+        mysqli_close($connection);
+?>
+
+</ol>
+</body>
+</html>

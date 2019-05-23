@@ -1,0 +1,17 @@
+<!-- Creates radio buttons for each customer in the customer table, and lists all their information -->
+
+<?php
+$query = "SELECT * FROM customer ORDER BY lastname";
+$result = mysqli_query($connection,$query);
+if (!$result) {
+    die("databases query failed.");
+}
+// displays each row from customer table, uses customer table rows
+while ($row = mysqli_fetch_assoc($result)) {
+        echo '<input type="radio" name="customers" value="';
+        echo $row["cusID"];
+        echo '">'. "Id: " . $row["cusID"].", " . "Name: " . $row["firstname"] . " " . $row["lastname"].", " ."City: ". $row["city"].", " . "Phone number: ". $row["phonenumber"].", " . "Agent ID: ". $row["agentID"]. "<br>";
+
+}
+mysqli_free_result($result);
+?>

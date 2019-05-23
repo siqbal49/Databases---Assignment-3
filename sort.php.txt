@@ -1,0 +1,41 @@
+<!-- sorts the product information in ascending or descending order based on the user selection in assignment3.php --> 
+
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Sorted Products</title>
+</head>
+<body>
+<?php
+include 'connectdb.php';
+?>
+<ol>
+<?php
+    if($_POST["sort"]==ASC)
+        {
+        $sorted= "SELECT * FROM product ORDER BY description ASC";
+        }
+    else {
+        $sorted= "SELECT * FROM product ORDER BY description DESC";
+        }
+    $result=mysqli_query($connection,$sorted);
+    if (!$result) {
+         die("database query2 failed.");
+     }
+    while ($row=mysqli_fetch_assoc($result)) {
+        echo '<li>';
+         echo "ID: ".$row["prodID"].", "."Description: ". $row["description"].", "."Cost: ".$row["cost"].", "."Quanity: ".$row["Quantity"];
+     }
+     mysqli_free_result($result);
+?>
+</ol>
+<?php
+        include "goback.php";
+?>
+
+<?php
+   mysqli_close($connection);
+?>
+</body>
+</html>

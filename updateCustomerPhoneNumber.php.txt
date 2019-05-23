@@ -1,0 +1,40 @@
+<!-- Displays the customer's current phone number and prompts them for a new number -->
+
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Update Customer Phone Number</title>
+</head>
+<body>
+<?php
+   include 'connectdb.php';
+?>
+<h1>Enter New Number:</h1>
+<ol>
+<?php
+   $customerID= $_POST["customerID"]; // from radio selection by user in assignment3.php
+   $query1= 'SELECT phonenumber FROM customer WHERE (cusID="' . $customerID . '")';
+   $result=mysqli_query($connection,$query1);
+   if (!$result) {
+          die("Error: insert failed" . mysqli_error($connection));
+   }
+   $row=mysqli_fetch_assoc($result);
+   $toString = strval($row["phonenumber"]);
+   $numberString = (string)$toString;
+   echo "Current Number: " . "$numberString";
+
+?>
+<form action="setNewNumber.php" method="post"> // a button that actually updates the phone number into the database 
+   Enter New Number: <input type="text" name="newNumber"/><br>
+   
+   // This is a prompt used to store the customer ID value needed for the update
+   Check if <?php echo $_POST['customerID']?> is the Customer ID whose number you would like to change: <input type="checkbox" name="confirmID" value="<?php echo $_POST['customerID'] ?>"/><br>
+   <input type="submit" value="Confirm New Number">
+</form>
+<?php
+   mysqli_close($connection);
+?>
+</ol>
+</body>
+</html>

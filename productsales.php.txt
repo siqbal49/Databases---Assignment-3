@@ -1,0 +1,36 @@
+<!-- Displays the amount a certain product sold (selected from radio button in assignment3.php), the description, and the total sales (quantity*cost) --> 
+
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Product Purchase History</title>
+</head>
+<body>
+<?php
+   include 'connectdb.php';
+?>
+<h1>Product Purchase Information</h1>
+<ol>
+<?php
+   $whichProduct= $_POST["purchaseproductID"];
+   $query1= 'SELECT SUM(Quantity) AS "quantityPurchased", description, SUM(Quantity)*cost AS "totalSales" FROM purchases, product WHERE purchases.prodID="' . $whichProduct . '" AND product.prodID="' . $whichProduct . '"';
+   $result=mysqli_query($connection,$query1);
+
+   if (!mysqli_query($connection, $query1)){
+          die(" query failed." . mysqli_error($connection));
+   }
+   while ($row=mysqli_fetch_assoc($result)) {
+        echo '<li>';
+        echo "Amount Sold: " . $row["quantityPurchased"] . ", Description: " . $row["description"] . ", Total Sales: " . $row["totalSales"];
+   }
+?>
+<?php
+        include "goback.php";
+?>
+<?php
+mysqli_close($connection);
+?>
+</ol>
+</body>
+</html>

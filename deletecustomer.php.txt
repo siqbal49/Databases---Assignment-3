@@ -1,0 +1,32 @@
+<!-- Deletes a customer based on the customer ID selected from the radio button in assignment3.php --> 
+
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Delete Customer</title>
+</head>
+<body>
+<?php
+   include 'connectdb.php'; // connects to database 
+?>
+<h1>Deleting Customer...</h1>
+<ol>
+<?php
+   $customerToDelete= $_POST["customerID"];
+   $query = 'DELETE FROM customer WHERE (cusID="' . $customerToDelete . '")';
+   if (!mysqli_query($connection, $query)) {
+        die("Error: insert failed" . mysqli_error($connection)); // checks if query was successful 
+    }
+   echo "Customer was successfully deleted!";
+?>
+<?php
+        include "goback.php"; // button that takes you back to home page 
+?>
+<?php
+        mysqli_close($connection);
+?>
+
+</ol>
+</body>
+</html>
